@@ -2,14 +2,14 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>Red Game</title>
 
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:#111;
+  background:#080b12;
   font-family:Arial,sans-serif;
   overflow:hidden;
   touch-action:none;
@@ -18,112 +18,228 @@ body{
   position:relative;
   width:100%;
   height:100vh;
-  max-width:900px;
+  max-width:1000px;
   margin:auto;
-  background:linear-gradient(#8ed6ff 0%,#dff6ff 65%,#70b85b 65%);
   overflow:hidden;
+  background:
+    linear-gradient(#79cfff 0%,#ccefff 62%,#4d9145 62%,#315f2e 100%);
 }
-#score{
+
+#menu{
   position:absolute;
-  top:15px;
-  left:15px;
-  font-size:22px;
+  inset:0;
+  background:linear-gradient(135deg,#090d18,#17243d);
+  color:white;
+  z-index:50;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+#menu h1{
+  font-size:46px;
+  margin:0 0 10px;
+  color:#e21b23;
+  text-shadow:0 0 15px #e21b23;
+}
+#menu p{color:#bbb}
+.menuBtn{
+  position:static;
+  transform:none;
+  width:250px;
+  margin:7px;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:#e21b23;
+  color:white;
+  font-size:18px;
   font-weight:bold;
+}
+.menuBtn.blue{background:#1265d8}
+
+#hud{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  justify-content:space-between;
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  z-index:10;
+  text-shadow:2px 2px 3px #000;
+}
+
+.player{
+  position:absolute;
+  width:48px;
+  height:75px;
+  bottom:22%;
   z-index:5;
 }
-#boy{
-  position:absolute;
-  left:70px;
-  bottom:18%;
-  width:42px;
-  height:62px;
-  z-index:3;
-}
+.p2{display:none}
+
 .head{
   position:absolute;
-  width:32px;
-  height:32px;
-  left:5px;
+  width:34px;
+  height:34px;
+  left:7px;
   top:0;
   background:#ffd0a0;
+  border:2px solid #111;
   border-radius:50%;
-  border:2px solid #222;
 }
 .hair{
   position:absolute;
-  left:3px;
+  left:4px;
   top:-5px;
-  width:36px;
-  height:17px;
-  background:#d71920;
-  border-radius:50% 50% 20% 20%;
+  width:40px;
+  height:20px;
+  background:#168cff;
+  border-radius:50% 50% 25% 25%;
   z-index:2;
 }
 .body{
   position:absolute;
   left:8px;
-  top:29px;
-  width:26px;
-  height:27px;
-  background:#e21b23;
-  border:2px solid #222;
+  top:30px;
+  width:32px;
+  height:30px;
+  background:linear-gradient(#1265d8 50%,#151a25 50%);
+  border:2px solid #111;
   border-radius:7px;
 }
 .leg{
   position:absolute;
-  top:52px;
-  width:10px;
-  height:18px;
-  background:#222;
+  top:58px;
+  width:11px;
+  height:19px;
+  background:#151a25;
   border-radius:5px;
 }
-.leg1{left:9px}.leg2{right:9px}
+.leg1{left:9px}
+.leg2{right:9px}
 
-#obstacle{
+.gun{
   position:absolute;
-  right:-60px;
-  bottom:18%;
-  width:38px;
+  width:31px;
+  height:8px;
+  background:#20242d;
+  border:2px solid #000;
+  top:39px;
+  left:31px;
+  transform:rotate(-5deg);
+  border-radius:3px;
+}
+
+#p1{left:80px}
+#p2{
+  right:80px;
+  transform:scaleX(-1);
+}
+
+.bullet{
+  position:absolute;
+  width:13px;
+  height:5px;
+  background:#ffd21a;
+  border-radius:5px;
+  z-index:4;
+  box-shadow:0 0 8px #fff000;
+}
+
+#enemy{
+  position:absolute;
+  width:48px;
+  height:75px;
+  right:100px;
+  bottom:22%;
+  z-index:4;
+}
+.enemyHead{
+  position:absolute;
+  width:34px;
+  height:34px;
+  left:7px;
+  background:#d99b70;
+  border:2px solid #111;
+  border-radius:50%;
+}
+.enemyHair{
+  position:absolute;
+  width:40px;
+  height:20px;
+  left:4px;
+  top:-5px;
+  background:#222;
+  border-radius:50%;
+}
+.enemyBody{
+  position:absolute;
+  top:30px;
+  left:8px;
+  width:32px;
+  height:30px;
+  background:#d71920;
+  border:2px solid #111;
+  border-radius:7px;
+}
+
+.controls{
+  position:absolute;
+  bottom:15px;
+  left:15px;
+  right:15px;
+  display:flex;
+  justify-content:space-between;
+  z-index:20;
+}
+.controlGroup{
+  display:flex;
+  gap:8px;
+}
+.control{
+  width:65px;
   height:55px;
-  background:#333;
-  border-radius:6px;
-}
-button{
-  position:absolute;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  padding:14px 35px;
   border:0;
-  border-radius:30px;
-  background:#e21b23;
+  border-radius:14px;
+  background:rgba(0,0,0,.65);
   color:white;
-  font-size:20px;
+  font-size:25px;
   font-weight:bold;
-  z-index:10;
 }
+.fire{
+  background:#c8141c;
+  width:85px;
+}
+
 #gameover{
   display:none;
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,.65);
+  background:rgba(0,0,0,.75);
   color:white;
-  z-index:20;
+  z-index:40;
   align-items:center;
   justify-content:center;
   flex-direction:column;
-  font-size:30px;
+  text-align:center;
 }
-#restart{
+#gameover h2{
+  font-size:35px;
+  color:#ff3030;
+}
+#back{
   position:static;
   transform:none;
-  margin-top:20px;
-}
-.jump{
-  animation:jump .55s ease-out;
-}
-@keyframes jump{
-  50%{bottom:43%}
+  padding:13px 30px;
+  border:0;
+  border-radius:10px;
+  background:#e21b23;
+  color:white;
+  font-size:18px;
 }
 </style>
 </head>
@@ -131,99 +247,300 @@ button{
 <body>
 
 <div id="game">
-  <div id="score">Ball: 0</div>
 
-  <div id="boy">
-    <div class="hair"></div>
-    <div class="head"></div>
-    <div class="body"></div>
-    <div class="leg leg1"></div>
-    <div class="leg leg2"></div>
+<div id="menu">
+  <h1>RED GAME</h1>
+  <p>Jang rejimini tanlang</p>
+
+  <button class="menuBtn" onclick="startGame(1)">
+    🎮 1 KISHILIK
+  </button>
+
+  <button class="menuBtn blue" onclick="startGame(2)">
+    👥 2 KISHILIK
+  </button>
+</div>
+
+<div id="hud">
+  <span id="hp1">🔵 P1 ❤️❤️❤️</span>
+  <span id="mode">1 KISHI</span>
+  <span id="hp2">🔴 P2 ❤️❤️❤️</span>
+</div>
+
+<div id="p1" class="player">
+  <div class="hair"></div>
+  <div class="head"></div>
+  <div class="body"></div>
+  <div class="leg leg1"></div>
+  <div class="leg leg2"></div>
+  <div class="gun"></div>
+</div>
+
+<div id="p2" class="player">
+  <div class="hair"></div>
+  <div class="head"></div>
+  <div class="body"></div>
+  <div class="leg leg1"></div>
+  <div class="leg leg2"></div>
+  <div class="gun"></div>
+</div>
+
+<div id="enemy">
+  <div class="enemyHair"></div>
+  <div class="enemyHead"></div>
+  <div class="enemyBody"></div>
+</div>
+
+<div class="controls">
+
+  <div class="controlGroup">
+    <button class="control" id="left">◀</button>
+    <button class="control" id="right">▶</button>
   </div>
 
-  <div id="obstacle"></div>
+  <button class="control fire" id="fire">🔫</button>
 
-  <button id="jumpBtn">SAKRA!</button>
-
-  <div id="gameover">
-    <div>O‘YIN TUGADI 😢</div>
-    <button id="restart">QAYTA O‘YNASH</button>
+  <div class="controlGroup">
+    <button class="control" id="p2left">◀</button>
+    <button class="control" id="p2right">▶</button>
   </div>
+
+</div>
+
+<div id="gameover">
+  <h2 id="result">O‘YIN TUGADI</h2>
+  <button id="back" onclick="location.reload()">MENU</button>
+</div>
+
 </div>
 
 <script>
-const boy=document.getElementById("boy");
-const obstacle=document.getElementById("obstacle");
-const scoreText=document.getElementById("score");
-const jumpBtn=document.getElementById("jumpBtn");
+
+const game=document.getElementById("game");
+const p1=document.getElementById("p1");
+const p2=document.getElementById("p2");
+const enemy=document.getElementById("enemy");
+const menu=document.getElementById("menu");
 const gameover=document.getElementById("gameover");
-const restart=document.getElementById("restart");
+const result=document.getElementById("result");
+const modeText=document.getElementById("mode");
 
-let score=0;
-let speed=5;
-let running=true;
+let mode=1;
+let running=false;
+let hp1=3;
+let hp2=3;
+let enemyHP=3;
 
-function jump(){
+let p1x=80;
+let p2x=650;
+
+function startGame(m){
+
+  mode=m;
+  running=true;
+  menu.style.display="none";
+
+  hp1=3;
+  hp2=3;
+  enemyHP=3;
+
+  p1x=80;
+  p2x=game.clientWidth-130;
+
+  p1.style.left=p1x+"px";
+
+  if(mode===2){
+    p2.style.display="block";
+    enemy.style.display="none";
+    modeText.textContent="2 KISHI";
+  }else{
+    p2.style.display="none";
+    enemy.style.display="block";
+    modeText.textContent="1 KISHI";
+  }
+
+  updateHP();
+}
+
+function updateHP(){
+  document.getElementById("hp1").textContent=
+    "🔵 P1 "+("❤️".repeat(hp1));
+
+  document.getElementById("hp2").textContent=
+    mode===2
+    ? "🔴 P2 "+("❤️".repeat(hp2))
+    : "🤖 DUSHMAN "+("❤️".repeat(enemyHP));
+}
+
+function moveP1(dir){
   if(!running)return;
-  if(!boy.classList.contains("jump")){
-    boy.classList.add("jump");
-    setTimeout(()=>boy.classList.remove("jump"),550);
+
+  p1x+=dir*25;
+
+  if(p1x<10)p1x=10;
+  if(p1x>game.clientWidth-70)p1x=game.clientWidth-70;
+
+  p1.style.left=p1x+"px";
+}
+
+function moveP2(dir){
+  if(!running || mode!==2)return;
+
+  p2x+=dir*25;
+
+  if(p2x<10)p2x=10;
+  if(p2x>game.clientWidth-70)p2x=game.clientWidth-70;
+
+  p2.style.left=p2x+"px";
+}
+
+function shoot(player){
+
+  if(!running)return;
+
+  const b=document.createElement("div");
+  b.className="bullet";
+
+  let startX;
+  let direction;
+
+  if(player===1){
+    startX=p1x+55;
+    direction=1;
+  }else{
+    startX=p2x-15;
+    direction=-1;
+  }
+
+  b.style.left=startX+"px";
+  b.style.bottom="calc(22% + 38px)";
+  game.appendChild(b);
+
+  let x=startX;
+
+  const timer=setInterval(()=>{
+
+    x+=direction*14;
+    b.style.left=x+"px";
+
+    const target=player===1
+      ? (mode===2 ? p2 : enemy)
+      : p1;
+
+    const br=b.getBoundingClientRect();
+    const tr=target.getBoundingClientRect();
+
+    if(
+      br.right>tr.left &&
+      br.left<tr.right &&
+      br.bottom>tr.top &&
+      br.top<tr.bottom
+    ){
+
+      clearInterval(timer);
+      b.remove();
+
+      if(player===1){
+
+        if(mode===2){
+          hp2--;
+        }else{
+          enemyHP--;
+        }
+
+      }else{
+        hp1--;
+      }
+
+      updateHP();
+      checkWin();
+    }
+
+    if(x<-50 || x>game.clientWidth+50){
+      clearInterval(timer);
+      b.remove();
+    }
+
+  },20);
+}
+
+function checkWin(){
+
+  if(hp1<=0){
+    endGame("🔴 P2 G‘ALABA!");
+  }
+
+  if(mode===2 && hp2<=0){
+    endGame("🔵 P1 G‘ALABA!");
+  }
+
+  if(mode===1 && enemyHP<=0){
+    endGame("🏆 G‘ALABA!");
   }
 }
 
-jumpBtn.addEventListener("touchstart",e=>{
+function endGame(text){
+  running=false;
+  result.textContent=text;
+  gameover.style.display="flex";
+}
+
+/* TELEFON TUGMALARI */
+
+document.getElementById("left")
+.addEventListener("touchstart",e=>{
   e.preventDefault();
-  jump();
+  moveP1(-1);
 });
 
-jumpBtn.addEventListener("click",jump);
+document.getElementById("right")
+.addEventListener("touchstart",e=>{
+  e.preventDefault();
+  moveP1(1);
+});
+
+document.getElementById("p2left")
+.addEventListener("touchstart",e=>{
+  e.preventDefault();
+  moveP2(-1);
+});
+
+document.getElementById("p2right")
+.addEventListener("touchstart",e=>{
+  e.preventDefault();
+  moveP2(1);
+});
+
+document.getElementById("fire")
+.addEventListener("touchstart",e=>{
+  e.preventDefault();
+  shoot(1);
+});
+
+/* KLAVIATURA */
 
 document.addEventListener("keydown",e=>{
-  if(e.code==="Space"||e.code==="ArrowUp") jump();
+
+  if(e.key==="a" || e.key==="ArrowLeft")
+    moveP1(-1);
+
+  if(e.key==="d" || e.key==="ArrowRight")
+    moveP1(1);
+
+  if(e.key==="w" || e.key===" ")
+    shoot(1);
+
+  if(e.key==="j")
+    moveP2(-1);
+
+  if(e.key==="l")
+    moveP2(1);
+
+  if(e.key==="k")
+    shoot(2);
+
 });
 
-function gameLoop(){
-  if(!running)return;
-
-  let x=obstacle.offsetLeft;
-  x-=speed;
-
-  if(x < -70){
-    x=game.clientWidth+Math.random()*250;
-    score++;
-    scoreText.textContent="Ball: "+score;
-    if(score%5===0)speed+=0.5;
-  }
-
-  obstacle.style.left=x+"px";
-
-  const b=boy.getBoundingClientRect();
-  const o=obstacle.getBoundingClientRect();
-
-  if(
-    b.right>o.left+8 &&
-    b.left<o.right-8 &&
-    b.bottom>o.top+8 &&
-    b.top<o.bottom
-  ){
-    running=false;
-    gameover.style.display="flex";
-  }
-
-  requestAnimationFrame(gameLoop);
-}
-
-restart.addEventListener("click",()=>{
-  score=0;
-  speed=5;
-  running=true;
-  scoreText.textContent="Ball: 0";
-  obstacle.style.left="100%";
-  gameover.style.display="none";
-  gameLoop();
-});
-
-gameLoop();
 </script>
 
 </body>
