@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Game</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#111;
+  font-family:Arial,sans-serif;
+  overflow:hidden;
+  touch-action:none;
+}
+#game{
+  position:relative;
+  width:100%;
+  height:100vh;
+  max-width:900px;
+  margin:auto;
+  background:linear-gradient(#8ed6ff 0%,#dff6ff 65%,#70b85b 65%);
+  overflow:hidden;
+}
+#score{
+  position:absolute;
+  top:15px;
+  left:15px;
+  font-size:22px;
+  font-weight:bold;
+  z-index:5;
+}
+#boy{
+  position:absolute;
+  left:70px;
+  bottom:18%;
+  width:42px;
+  height:62px;
+  z-index:3;
+}
+.head{
+  position:absolute;
+  width:32px;
+  height:32px;
+  left:5px;
+  top:0;
+  background:#ffd0a0;
+  border-radius:50%;
+  border:2px solid #222;
+}
+.hair{
+  position:absolute;
+  left:3px;
+  top:-5px;
+  width:36px;
+  height:17px;
+  background:#d71920;
+  border-radius:50% 50% 20% 20%;
+  z-index:2;
+}
+.body{
+  position:absolute;
+  left:8px;
+  top:29px;
+  width:26px;
+  height:27px;
+  background:#e21b23;
+  border:2px solid #222;
+  border-radius:7px;
+}
+.leg{
+  position:absolute;
+  top:52px;
+  width:10px;
+  height:18px;
+  background:#222;
+  border-radius:5px;
+}
+.leg1{left:9px}.leg2{right:9px}
+
+#obstacle{
+  position:absolute;
+  right:-60px;
+  bottom:18%;
+  width:38px;
+  height:55px;
+  background:#333;
+  border-radius:6px;
+}
+button{
+  position:absolute;
+  bottom:25px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:14px 35px;
+  border:0;
+  border-radius:30px;
+  background:#e21b23;
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  z-index:10;
+}
+#gameover{
+  display:none;
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  color:white;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  font-size:30px;
+}
+#restart{
+  position:static;
+  transform:none;
+  margin-top:20px;
+}
+.jump{
+  animation:jump .55s ease-out;
+}
+@keyframes jump{
+  50%{bottom:43%}
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+  <div id="score">Ball: 0</div>
+
+  <div id="boy">
+    <div class="hair"></div>
+    <div class="head"></div>
+    <div class="body"></div>
+    <div class="leg leg1"></div>
+    <div class="leg leg2"></div>
+  </div>
+
+  <div id="obstacle"></div>
+
+  <button id="jumpBtn">SAKRA!</button>
+
+  <div id="gameover">
+    <div>O‘YIN TUGADI 😢</div>
+    <button id="restart">QAYTA O‘YNASH</button>
+  </div>
+</div>
+
+<script>
+const boy=document.getElementById("boy");
+const obstacle=document.getElementById("obstacle");
+const scoreText=document.getElementById("score");
+const jumpBtn=document.getElementById("jumpBtn");
+const gameover=document.getElementById("gameover");
+const restart=document.getElementById("restart");
+
+let score=0;
+let speed=5;
+let running=true;
+
+function jump(){
+  if(!running)return;
+  if(!boy.classList.contains("jump")){
+    boy.classList.add("jump");
+    setTimeout(()=>boy.classList.remove("jump"),550);
+  }
+}
+
+jumpBtn.addEventListener("touchstart",e=>{
+  e.preventDefault();
+  jump();
+});
+
+jumpBtn.addEventListener("click",jump);
+
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"||e.code==="ArrowUp") jump();
+});
+
+function gameLoop(){
+  if(!running)return;
+
+  let x=obstacle.offsetLeft;
+  x-=speed;
+
+  if(x < -70){
+    x=game.clientWidth+Math.random()*250;
+    score++;
+    scoreText.textContent="Ball: "+score;
+    if(score%5===0)speed+=0.5;
+  }
+
+  obstacle.style.left=x+"px";
+
+  const b=boy.getBoundingClientRect();
+  const o=obstacle.getBoundingClientRect();
+
+  if(
+    b.right>o.left+8 &&
+    b.left<o.right-8 &&
+    b.bottom>o.top+8 &&
+    b.top<o.bottom
+  ){
+    running=false;
+    gameover.style.display="flex";
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+restart.addEventListener("click",()=>{
+  score=0;
+  speed=5;
+  running=true;
+  scoreText.textContent="Ball: 0";
+  obstacle.style.left="100%";
+  gameover.style.display="none";
+  gameLoop();
+});
+
+gameLoop();
+</script>
+
+</body>
+</html>
